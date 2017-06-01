@@ -27,7 +27,25 @@
   [ "$status" -eq 0 ]
 }
 
-# TODO: has correct version
+@test "dovecot has correct version" {
+  run docker run --rm --entrypoint sh $IMAGE -c \
+    "dovecot --version | cut -d ' ' -f 1 \
+                       | tr -d ' '"
+  [ "$status" -eq 0 ]
+  [ "$output" != '' ]
+  actual="$output"
+
+  run sh -c "cat Makefile | grep $DOCKERFILE: \
+                          | cut -d ':' -f 2 \
+                          | cut -d ',' -f 1 \
+                          | cut -d '-' -f 1 \
+                          | tr -d ' '"
+  [ "$status" -eq 0 ]
+  [ "$output" != '' ]
+  expected="$output"
+
+  [ "$actual.0" == "$expected" ]
+}
 
 
 @test "errors are logged to STDERR" {
