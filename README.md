@@ -73,12 +73,12 @@ Latest version of `X.Y` Dovecot minor version.
 
 ### `X.Y.Z`
 
-Concrete `X.Y.Z` version of Dovecot.
+Concrete `X.Y.Z` version of Dovecot with latest updates applied.
 
 
 ### `X.Y.Z.P`
 
-Concrete `X.Y.Z` version of Dovecot with applied `P` update.
+Concrete `X.Y.Z` version of Dovecot with `P` update applied.
 
 
 ### `alpine`
