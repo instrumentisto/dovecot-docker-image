@@ -18,7 +18,7 @@ RUN apk update \
  # Install Dovecot dependencies
  && apk add --no-cache \
         libressl libressl2.5-libcrypto libressl2.5-libssl \
-        libbz2 zlib \
+        libbz2 lz4-libs xz-libs zlib \
         libcap \
         libpq mariadb-client-libs sqlite-libs \
         libldap \
@@ -31,7 +31,7 @@ RUN apk update \
  # Install Dovecot build dependencies
  && apk add --no-cache --virtual .build-deps \
         libressl-dev \
-        bzip2-dev zlib-dev \
+        bzip2-dev lz4-dev xz-dev zlib-dev \
         libcap-dev \
         postgresql-dev mariadb-dev sqlite-dev \
         openldap-dev \
@@ -50,18 +50,21 @@ RUN apk update \
  && patch -p1 -i ./libressl.patch \
 
  # Build Dovecot from sources
- && ./configure --prefix=/usr \
-                --with-ssl=openssl --with-ssldir=/etc/ssl/dovecot \
-                --with-sql=plugin --with-pgsql --with-mysql --with-sqlite \
-                --with-ldap=plugin \
-                --with-gssapi=plugin \
-                --with-rundir=/run/dovecot \
-                --localstatedir=/var \
-                --sysconfdir=/etc \
-                # No documentation included to keep image size smaller
-                --mandir=/tmp/man \
-                --docdir=/tmp/doc \
-                --infodir=/tmp/info \
+ && ./configure \
+        --prefix=/usr \
+        --with-ssl=openssl --with-ssldir=/etc/ssl/dovecot \
+        --with-lz4 --with-lzma \
+        --with-libcap \
+        --with-sql=plugin --with-pgsql --with-mysql --with-sqlite \
+        --with-ldap=plugin \
+        --with-gssapi=plugin \
+        --with-rundir=/run/dovecot \
+        --localstatedir=/var \
+        --sysconfdir=/etc \
+        # No documentation included to keep image size smaller
+        --mandir=/tmp/man \
+        --docdir=/tmp/doc \
+        --infodir=/tmp/info \
  && make \
 
  # Create Dovecot user and groups
@@ -94,7 +97,7 @@ RUN apk update \
         /etc/dovecot/conf.d/10-auth.conf \
  && install -m 640 -o dovecot -g mail /dev/null \
             /etc/dovecot/users \
- # Change ssl dirs in default config and generate default certs
+ # Change SSL dirs in default config and generate default certs
  && sed -i -e 's,^ssl_cert =.*,ssl_cert = </etc/ssl/dovecot/server.pem,' \
            -e 's,^ssl_key =.*,ssl_key = </etc/ssl/dovecot/server.key,' \
         /etc/dovecot/conf.d/10-ssl.conf \

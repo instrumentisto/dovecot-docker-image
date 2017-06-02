@@ -14,6 +14,7 @@
 
 IMAGE_NAME := instrumentisto/dovecot
 ALL_IMAGES := \
+	debian:2.2.27.0,2.2.27,2.2,2,latest \
 	alpine:2.2.27.0-alpine,2.2.27-alpine,2.2-alpine,2-alpine,alpine
 #	<Dockerfile>:<version>,<tag1>,<tag2>,...
 
