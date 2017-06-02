@@ -109,7 +109,7 @@
   run docker rm -f test-dovecot
   run docker run -d --name test-dovecot -p 993:993 $IMAGE
   [ "$status" -eq 0 ]
-  run sleep 10
+  run sleep 5
 
   run docker run --rm -i --link test-dovecot:dovecot \
     --entrypoint sh instrumentisto/nmap -c \
@@ -123,7 +123,7 @@
   run docker rm -f test-dovecot
   run docker run -d --name test-dovecot -p 993:993 $IMAGE
   [ "$status" -eq 0 ]
-  run sleep 10
+  run sleep 5
 
   run docker run --rm -i --link test-dovecot:dovecot \
     --entrypoint sh instrumentisto/nmap -c \
