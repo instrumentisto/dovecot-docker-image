@@ -98,6 +98,12 @@
   [ "$output" == "600" ]
 }
 
+@test "default DH parameters are generated" {
+  run docker run --rm --entrypoint sh $IMAGE -c \
+    'ls /var/lib/dovecot/ssl-parameters.dat'
+  [ "$status" -eq 0 ]
+}
+
 
 @test "only A grade TLS ciphers are used" {
   run docker rm -f test-dovecot

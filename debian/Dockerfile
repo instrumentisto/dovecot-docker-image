@@ -116,6 +116,10 @@ RUN apt-get update \
            -e 's,^#ssl_prefer_server_ciphers =.*,ssl_prefer_server_ciphers = yes,' \
            -e 's,^#ssl_dh_parameters_length =.*,ssl_dh_parameters_length = 2048,' \
         /etc/dovecot/conf.d/10-ssl.conf \
+ # Pregenerate Diffie-Hellman parameters (heavy operation)
+ # to not consume time at container start
+ && mkdir -p /var/lib/dovecot \
+ && /usr/libexec/dovecot/ssl-params \
 
  # Cleanup unnecessary stuff
  && apt-get purge -y --auto-remove \
