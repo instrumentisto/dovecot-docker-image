@@ -12,7 +12,7 @@ $DebianRepoCommit = 'fc8f5ddc49b39ee56eb57a082ee34dbd58a30c1d';
 
 <? if ($isAlpineImage) { ?>
 # https://hub.docker.com/_/alpine
-FROM alpine:3.6
+FROM alpine:3.8
 <? } else { ?>
 # https://hub.docker.com/_/debian
 FROM debian:stretch-slim
@@ -40,10 +40,10 @@ RUN apt-get update \
  # Install Dovecot dependencies
 <? if ($isAlpineImage) { ?>
  && apk add --no-cache \
-        libressl libressl2.5-libcrypto libressl2.5-libssl \
+        libressl libressl2.7-libcrypto libressl2.7-libssl \
         libbz2 lz4-libs xz-libs zlib \
         libcap \
-        libpq mariadb-client-libs sqlite-libs \
+        libpq mariadb-client sqlite-libs \
         libldap \
         heimdal-libs \
 <? } else { ?>
